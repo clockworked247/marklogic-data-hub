@@ -40,7 +40,7 @@
             [autocomplete]="true"
             [(ngModel)]="conns[prop.name]"
           >
-            <mdl-option *ngFor="let prop of getProps() | matchSorter:'name':autocompleteSelect.searchQuery" [value]="prop.name">
+            <mdl-option *ngFor="let prop of getProps() | matchSorter:['name','type']:autocompleteSelect.searchQuery" [value]="prop.name">
               <span class="prop-name">{{prop.name}}</span> <span class="prop-val" title="{{type}}">{{ prop.type === "string" ? '"' : '' }}{{ prop.val | slice:0:valMaxLen }}{{ prop.val.length > valMaxLen ? '...' : '' }}{{ prop.type === "string" ? '"' : '' }}</span>
             </mdl-option>
           </mdl-select>
