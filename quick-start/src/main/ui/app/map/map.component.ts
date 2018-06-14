@@ -32,11 +32,13 @@ export class MapComponent implements OnInit {
   private currentSelection: string = '';
 
   // Connections
-  public conns: Object<any> = [];
+  public conns: any;
   private mapPrefix: string = 'dhf-map-';
 
   private entityName: string;
   public flowName: string;
+
+  private mapName: string;
 
   private filterMenu: Array<string> = ['all', 'matching', 'string', 'number', 'date'];
   private filterSelected: string = 'all';
@@ -180,7 +182,7 @@ export class MapComponent implements OnInit {
       "mapping" : {
         "language" : "zxx",
         "name" : this.mapName,
-        "description" : "",,  // TODO
+        "description" : "",  // TODO
         "version" : "1",
         "targetEntityType" : "http://marklogic.com/example/Schema-0.0.2/Person",  // TODO
         "sourceContext": "/path/to/properties/",  // TODO
