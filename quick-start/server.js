@@ -6,7 +6,9 @@
 
 const util = require('util');
 const path = require('path');
-const proxy = require('http-proxy-middleware')
+const proxy = require('http-proxy-middleware');
+const plantuml = require('node-plantuml');
+plantuml.useNailgun(); // Activate the usage of Nailgun
 const express = require('express');
 const request = require('request');
 const swagger = require('swagger-express-middleware');
@@ -63,6 +65,20 @@ middleware.init(swaggerMockDocPath, (err) => {
     middleware.CORS(),
     // middleware.validateRequest()  // TODO: requires very thorough Swagger documentation to be in place
   );
+
+
+  app.use('/api/swagger-uml/:uml', function(req, res) {
+    res.set('Content-Type', 'image/png');
+   
+    if (req.params.uml === 'mocks' || req.params.uml === 'full') {
+      var decode = plantuml.decode('./api/uml/' + req.params.uml + '.puml');
+      var gen = plantuml.generate({format: 'png'});
+     
+      decode.out.pipe(gen.in);
+      gen.out.pipe(res);
+    }
+    
+  });
   
   // // The mock middleware will use our custom data store,
   // // which we already pre-populated with mock data
@@ -74,7 +90,7 @@ middleware.init(swaggerMockDocPath, (err) => {
   app.use(proxy({ 
     target: 'http://localhost:8080', 
     ws: true, // proxy websockets
-  }))
+  }));
 
   app.listen(8081, () => {
     console.log('Sample Mock API server is now running at http://localhost:8081');
